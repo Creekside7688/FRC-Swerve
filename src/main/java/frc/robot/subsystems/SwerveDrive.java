@@ -9,7 +9,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Swerve.DriveConstants;
@@ -58,7 +57,7 @@ public class SwerveDrive extends SubsystemBase {
             try {
                 Thread.sleep(1000);
                 resetHeading();
-            } catch (Exception e) {
+            } catch(Exception e) {
             }
         }).start();
     }
@@ -75,7 +74,7 @@ public class SwerveDrive extends SubsystemBase {
         return Rotation2d.fromDegrees(this.getHeading());
     }
 
-    public void stopModules() {
+    public void stop() {
         frontLeft.stop();
         frontRight.stop();
         backLeft.stop();

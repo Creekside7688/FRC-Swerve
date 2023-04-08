@@ -14,8 +14,7 @@ public final class Constants {
         public static final int CONTROLLER_PORT = 0;
 
         public static final double TELEOP_MAX_SPEED = DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND / 4;
-        public static final double TELEOP_MAX_ANGULAR_SPEED = DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND
-                / 4;
+        public static final double TELEOP_MAX_ANGULAR_SPEED = DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND / 4;
 
         public static final double DEAD_BAND = 0.05;
     }
@@ -26,8 +25,7 @@ public final class Constants {
             public static final double DRIVE_GEAR_RATIO = 1.0 / 8.14;
             public static final double TURN_GEAR_RATIO = 1.0 / (150.0 / 7.0);
 
-            public static final double DRIVE_ENCODER_ROTATION_TO_METRES = DRIVE_GEAR_RATIO * WHEEL_DIAMETER_METRES
-                    * Math.PI;
+            public static final double DRIVE_ENCODER_ROTATION_TO_METRES = DRIVE_GEAR_RATIO * WHEEL_DIAMETER_METRES * Math.PI;
             public static final double DRIVE_ENCODER_RPM_TO_METRES_PER_SECOND = DRIVE_ENCODER_ROTATION_TO_METRES / 60;
 
             public static final double TURN_ENCODER_ROTATION_TO_RADIANS = TURN_GEAR_RATIO * 2 * Math.PI;

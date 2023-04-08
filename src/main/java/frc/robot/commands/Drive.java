@@ -37,7 +37,7 @@ public class Drive extends CommandBase {
         this.xLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ACCELERATION_PER_SECOND);
         this.yLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ACCELERATION_PER_SECOND);
         this.tLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ANGULAR_ACCELERATION_PER_SECOND);
-        
+
         addRequirements(swerveDrive);
     }
 
@@ -74,7 +74,7 @@ public class Drive extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        swerveDrive.stopModules();
+        swerveDrive.stop();
     }
 
     @Override
