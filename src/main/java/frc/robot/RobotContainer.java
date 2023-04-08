@@ -17,6 +17,8 @@ public class RobotContainer {
     private final Joystick controller = new Joystick(OperatorConstants.CONTROLLER_PORT);
 
     private final SwerveDrive swerveDrive = new SwerveDrive();
+    
+    private final JoystickButton resetHeading = new JoystickButton(controller, 2);
 
     private final Drive drive = new Drive(swerveDrive,
             () -> -controller.getRawAxis(XboxController.Axis.kLeftY.value),
@@ -24,9 +26,10 @@ public class RobotContainer {
             () -> controller.getRawAxis(XboxController.Axis.kRightX.value),
             () -> !controller.getRawButton(XboxController.Button.kLeftBumper.value));
 
-    private final JoystickButton resetHeading = new JoystickButton(controller, 2);
 
     public RobotContainer() {
+        swerveDrive.setDefaultCommand(drive);
+
         configureBindings();
     }
 
