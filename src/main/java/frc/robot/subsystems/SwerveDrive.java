@@ -53,10 +53,11 @@ public class SwerveDrive extends SubsystemBase {
             DriveConstants.BR_ANGLE_ENCODER_REVERSED);
 
     public SwerveDrive() {
+        // Gyro recalibrates on startup so we have to delay the zeroing of it.
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
-                resetHeading();
+                this.resetHeading();
             } catch(Exception e) {
             }
         }).start();
@@ -66,6 +67,7 @@ public class SwerveDrive extends SubsystemBase {
         gyro.reset();
     }
 
+    // Gryo is continuous, so we have to use this weird function to get something between 0 and 360
     public double getHeading() {
         return Math.IEEEremainder(gyro.getAngle(), 360);
     }

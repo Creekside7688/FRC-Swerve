@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -21,7 +22,7 @@ public class SwerveModule {
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder turnEncoder;
 
-    private final CANCoder angleEncoder;
+    private final WPI_CANCoder angleEncoder;
     private final boolean angleEncoderReversed;
     private final double angleEncoderOffsetRadians;
 
@@ -36,7 +37,7 @@ public class SwerveModule {
 
         this.driveEncoder = this.driveMotor.getEncoder();
         this.turnEncoder = this.turnMotor.getEncoder();
-        this.angleEncoder = new CANCoder(angleEncoder);
+        this.angleEncoder = new WPI_CANCoder(angleEncoder);
 
         this.driveEncoder.setPositionConversionFactor(ModuleConstants.DRIVE_ENCODER_ROTATION_TO_METRES);
         this.driveEncoder.setVelocityConversionFactor(ModuleConstants.DRIVE_ENCODER_RPM_TO_METRES_PER_SECOND);
@@ -72,6 +73,7 @@ public class SwerveModule {
         double angle = angleEncoder.getAbsolutePosition();
         angle *= 2.0 * Math.PI;
         angle -= angleEncoderOffsetRadians;
+
         return angle * (angleEncoderReversed ? -1.0 : 1.0);
     }
 
@@ -85,6 +87,7 @@ public class SwerveModule {
     }
 
     public void setState(SwerveModuleState state) {
+        // Prevent the wheels from going back to their default state when there is no input.
         if(Math.abs(state.speedMetersPerSecond) < 0.001) {
             stop();
             return;

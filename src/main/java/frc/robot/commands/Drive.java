@@ -17,9 +17,9 @@ import frc.robot.subsystems.SwerveDrive;
 public class Drive extends CommandBase {
     private final SwerveDrive swerveDrive;
 
-    private final Supplier<Double> xSpeed;
-    private final Supplier<Double> ySpeed;
-    private final Supplier<Double> tSpeed;
+    private final Supplier<Double> xSpeedSupplier;
+    private final Supplier<Double> ySpeedSupplier;
+    private final Supplier<Double> tSpeedSupplier;
 
     private final Supplier<Boolean> fieldOriented;
 
@@ -27,40 +27,42 @@ public class Drive extends CommandBase {
     private final SlewRateLimiter yLimiter;
     private final SlewRateLimiter tLimiter;
 
-    public Drive(SwerveDrive swerveDrive, Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> tSpeed, Supplier<Boolean> fieldOriented) {
+    public Drive(SwerveDrive swerveDrive, Supplier<Double> xSpeedSupplier, Supplier<Double> ySpeedSupplier, Supplier<Double> tSpeedSupplier, Supplier<Boolean> fieldOriented) {
         this.swerveDrive = swerveDrive;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.tSpeed = tSpeed;
+        this.xSpeedSupplier = xSpeedSupplier;
+        this.ySpeedSupplier = ySpeedSupplier;
+        this.tSpeedSupplier = tSpeedSupplier;
         this.fieldOriented = fieldOriented;
 
-        this.xLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ACCELERATION_PER_SECOND);
-        this.yLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ACCELERATION_PER_SECOND);
-        this.tLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ANGULAR_ACCELERATION_PER_SECOND);
+        this.xLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ACCELERATION_METRES_PER_SECOND);
+        this.yLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ACCELERATION_METRES_PER_SECOND);
+        this.tLimiter = new SlewRateLimiter(DriveConstants.MAXIMUM_ANGULAR_ACCELERATION_RADIANS_PER_SECOND);
 
         addRequirements(swerveDrive);
     }
 
     @Override
-    public void initialize() {
-    }
+    public void initialize() { }
 
     @Override
     public void execute() {
-        double xSpeed = this.xSpeed.get();
-        double ySpeed = this.ySpeed.get();
-        double tSpeed = this.tSpeed.get();
+        double xSpeed = this.xSpeedSupplier.get();
+        double ySpeed = this.ySpeedSupplier.get();
+        double tSpeed = this.tSpeedSupplier.get();
 
+        // Something something deadband to protect motors.
         xSpeed = Math.abs(xSpeed) > OperatorConstants.DEAD_BAND ? xSpeed : 0.0;
-        ySpeed = Math.abs(xSpeed) > OperatorConstants.DEAD_BAND ? ySpeed : 0.0;
-        tSpeed = Math.abs(xSpeed) > OperatorConstants.DEAD_BAND ? tSpeed : 0.0;
+        ySpeed = Math.abs(ySpeed) > OperatorConstants.DEAD_BAND ? ySpeed : 0.0;
+        tSpeed = Math.abs(tSpeed) > OperatorConstants.DEAD_BAND ? tSpeed : 0.0;
 
-        xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND;
-        ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND;
-        tSpeed = tLimiter.calculate(tSpeed) * DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND;
+        // Reduce acceleration to make it more controllable.
+        xSpeed = xLimiter.calculate(xSpeed) * OperatorConstants.TELEOP_MAXIMUM_SPEED;
+        ySpeed = yLimiter.calculate(ySpeed) * OperatorConstants.TELEOP_MAXIMUM_SPEED;
+        tSpeed = tLimiter.calculate(tSpeed) * OperatorConstants.TELEOP_MAXIMUM_ANGULAR_SPEED;
 
         ChassisSpeeds chassisSpeeds;
 
+        // The button is negated in the constructor call, so by default it is field relative.
         if(fieldOriented.get()) {
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, tSpeed, swerveDrive.getRotation2d());
         } else {
@@ -68,7 +70,6 @@ public class Drive extends CommandBase {
         }
 
         SwerveModuleState[] states = DriveConstants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-
         swerveDrive.setStates(states);
     }
 

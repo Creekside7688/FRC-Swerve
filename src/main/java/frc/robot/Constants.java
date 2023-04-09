@@ -13,8 +13,8 @@ public final class Constants {
     public static class OperatorConstants {
         public static final int CONTROLLER_PORT = 0;
 
-        public static final double TELEOP_MAX_SPEED = DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND / 4;
-        public static final double TELEOP_MAX_ANGULAR_SPEED = DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND / 4;
+        public static final double TELEOP_MAXIMUM_SPEED = DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND / 4;
+        public static final double TELEOP_MAXIMUM_ANGULAR_SPEED = DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND / 4;
 
         public static final double DEAD_BAND = 0.05;
     }
@@ -36,8 +36,14 @@ public final class Constants {
 
         public static class DriveConstants {
             // Ideally we would build a square chassis so these would be the same.
-            public static final double TRACK_WIDTH_METRES = Units.inchesToMeters(28);
-            public static final double WHEEL_BASE_METRES = Units.inchesToMeters(28);
+            public static final double DRIVEBASE_WIDTH_METRES = Units.inchesToMeters(28);
+            public static final double DRIVEBASE_LENGTH_METRES = Units.inchesToMeters(28);
+
+            // Distance from the center of the MK4i wheel to the edge of the drivetrain.
+            public static final double WHEEL_DISTANCE_FROM_MODULE_EDGE_METRES = Units.inchesToMeters(2.625);
+
+            public static final double TRACK_WIDTH_METRES = DRIVEBASE_WIDTH_METRES - (2 * WHEEL_DISTANCE_FROM_MODULE_EDGE_METRES);
+            public static final double WHEEL_BASE_METRES = DRIVEBASE_LENGTH_METRES - (2 * WHEEL_DISTANCE_FROM_MODULE_EDGE_METRES);
 
             public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
                     new Translation2d(WHEEL_BASE_METRES / 2, -TRACK_WIDTH_METRES / 2),
@@ -48,8 +54,8 @@ public final class Constants {
             public static final double MAXIMUM_SPEED_METRES_PER_SECOND = 3.0;
             public static final double MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND = 2.0 * 2.0 * Math.PI;
 
-            public static final double MAXIMUM_ACCELERATION_PER_SECOND = 3.0;
-            public static final double MAXIMUM_ANGULAR_ACCELERATION_PER_SECOND = 3.0;
+            public static final double MAXIMUM_ACCELERATION_METRES_PER_SECOND = 3.0;
+            public static final double MAXIMUM_ANGULAR_ACCELERATION_RADIANS_PER_SECOND = 3.0;
 
             public static final int FL_DRIVE_MOTOR_ID = 1;
             public static final int FR_DRIVE_MOTOR_ID = 1;
