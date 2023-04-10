@@ -5,8 +5,6 @@
 package frc.robot.commands;
 
 import java.util.function.Supplier;
-
-import edu.wpi.first.math.MathUsageId;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -44,7 +42,8 @@ public class Drive extends CommandBase {
     }
 
     @Override
-    public void initialize() { }
+    public void initialize() {
+    }
 
     @Override
     public void execute() {
