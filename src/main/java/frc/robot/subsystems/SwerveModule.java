@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -45,6 +49,7 @@ public class SwerveModule {
 
         this.angleEncoderOffsetRadians = angleOffset;
         this.angleEncoderReversed = angleReversed;
+        configurateAngleEncoder();
 
         this.turnController = new PIDController(ModuleConstants.TURN_KP, 0, 0);
         this.turnController.enableContinuousInput(-Math.PI, Math.PI);
@@ -79,6 +84,15 @@ public class SwerveModule {
     public void resetEncoders() {
         driveEncoder.setPosition(0);
         turnEncoder.setPosition(this.getAngleEncoderRadians());
+    }
+
+    private void configurateAngleEncoder() {
+        CANCoderConfiguration config = new CANCoderConfiguration();
+        config.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        config.sensorDirection = false;
+        config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+        config.sensorTimeBase = SensorTimeBase.PerSecond;
+        angleEncoder.configAllSettings(config);
     }
 
     public SwerveModuleState getState() {

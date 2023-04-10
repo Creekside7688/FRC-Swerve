@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUsageId;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -50,19 +52,24 @@ public class Drive extends CommandBase {
         double ySpeed = this.ySpeedSupplier.get();
         double tSpeed = this.tSpeedSupplier.get();
 
-        // Something something deadband to protect motors.
-        xSpeed = Math.abs(xSpeed) > OperatorConstants.DEAD_BAND ? xSpeed : 0.0;
-        ySpeed = Math.abs(ySpeed) > OperatorConstants.DEAD_BAND ? ySpeed : 0.0;
-        tSpeed = Math.abs(tSpeed) > OperatorConstants.DEAD_BAND ? tSpeed : 0.0;
+        xSpeed = MathUtil.applyDeadband(xSpeed, OperatorConstants.DEAD_BAND);
+        ySpeed = MathUtil.applyDeadband(ySpeed, OperatorConstants.DEAD_BAND);
+        tSpeed = MathUtil.applyDeadband(tSpeed, OperatorConstants.DEAD_BAND);
 
-        // Reduce acceleration to make it more controllable.
+        xSpeed = Math.pow(xSpeed, 3);
+        ySpeed = Math.pow(ySpeed, 3);
+        tSpeed = Math.pow(tSpeed, 3);
+
+        xSpeed += Math.signum(xSpeed) * OperatorConstants.OFFSET;
+        ySpeed += Math.signum(ySpeed) * OperatorConstants.OFFSET;
+        tSpeed += Math.signum(tSpeed) * OperatorConstants.OFFSET;
+
         xSpeed = xLimiter.calculate(xSpeed) * OperatorConstants.TELEOP_MAXIMUM_SPEED;
         ySpeed = yLimiter.calculate(ySpeed) * OperatorConstants.TELEOP_MAXIMUM_SPEED;
         tSpeed = tLimiter.calculate(tSpeed) * OperatorConstants.TELEOP_MAXIMUM_ANGULAR_SPEED;
 
         ChassisSpeeds chassisSpeeds;
 
-        // The button is negated in the constructor call, so by default it is field relative.
         if(fieldOriented.get()) {
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, tSpeed, swerveDrive.getRotation2d());
         } else {

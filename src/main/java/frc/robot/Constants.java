@@ -16,7 +16,8 @@ public final class Constants {
         public static final double TELEOP_MAXIMUM_SPEED = DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND / 4;
         public static final double TELEOP_MAXIMUM_ANGULAR_SPEED = DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND / 4;
 
-        public static final double DEAD_BAND = 0.05;
+        public static final double DEAD_BAND = 0.15;
+        public static final double OFFSET = 0.1;
     }
 
     public static class Swerve {
