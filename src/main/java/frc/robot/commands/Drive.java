@@ -51,6 +51,7 @@ public class Drive extends CommandBase {
         double ySpeed = this.ySpeedSupplier.get();
         double tSpeed = this.tSpeedSupplier.get();
 
+        // https://www.desmos.com/calculator/8jsrrl8obi
         xSpeed = MathUtil.applyDeadband(xSpeed, OperatorConstants.DEAD_BAND);
         ySpeed = MathUtil.applyDeadband(ySpeed, OperatorConstants.DEAD_BAND);
         tSpeed = MathUtil.applyDeadband(tSpeed, OperatorConstants.DEAD_BAND);
@@ -59,9 +60,9 @@ public class Drive extends CommandBase {
         ySpeed = Math.pow(ySpeed, 3);
         tSpeed = Math.pow(tSpeed, 3);
 
-        xSpeed += Math.signum(xSpeed) * OperatorConstants.OFFSET;
-        ySpeed += Math.signum(ySpeed) * OperatorConstants.OFFSET;
-        tSpeed += Math.signum(tSpeed) * OperatorConstants.OFFSET;
+        xSpeed += Math.abs(xSpeed) != 0 ? Math.signum(xSpeed) * OperatorConstants.OFFSET : 0.0;
+        ySpeed += Math.abs(ySpeed) != 0 ? Math.signum(ySpeed) * OperatorConstants.OFFSET : 0.0;
+        tSpeed += Math.abs(tSpeed) != 0 ? Math.signum(tSpeed) * OperatorConstants.OFFSET : 0.0;
 
         xSpeed = xLimiter.calculate(xSpeed) * OperatorConstants.TELEOP_MAXIMUM_SPEED;
         ySpeed = yLimiter.calculate(ySpeed) * OperatorConstants.TELEOP_MAXIMUM_SPEED;

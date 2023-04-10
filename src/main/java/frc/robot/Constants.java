@@ -59,14 +59,14 @@ public final class Constants {
             public static final double MAXIMUM_ANGULAR_ACCELERATION_RADIANS_PER_SECOND = 3.0;
 
             public static final int FL_DRIVE_MOTOR_ID = 1;
-            public static final int FR_DRIVE_MOTOR_ID = 1;
-            public static final int BL_DRIVE_MOTOR_ID = 1;
-            public static final int BR_DRIVE_MOTOR_ID = 1;
+            public static final int FR_DRIVE_MOTOR_ID = 3;
+            public static final int BL_DRIVE_MOTOR_ID = 5;
+            public static final int BR_DRIVE_MOTOR_ID = 7;
 
-            public static final int FL_TURN_MOTOR_ID = 1;
-            public static final int FR_TURN_MOTOR_ID = 1;
-            public static final int BL_TURN_MOTOR_ID = 1;
-            public static final int BR_TURN_MOTOR_ID = 1;
+            public static final int FL_TURN_MOTOR_ID = 2;
+            public static final int FR_TURN_MOTOR_ID = 4;
+            public static final int BL_TURN_MOTOR_ID = 6;
+            public static final int BR_TURN_MOTOR_ID = 8;
 
             public static final boolean FL_DRIVE_ENCODER_REVERSED = false;
             public static final boolean FR_DRIVE_ENCODER_REVERSED = false;
@@ -79,9 +79,9 @@ public final class Constants {
             public static final boolean BR_TURN_ENCODER_REVERSED = false;
 
             public static final int FL_ANGLE_ENCODER_ID = 1;
-            public static final int FR_ANGLE_ENCODER_ID = 1;
-            public static final int BL_ANGLE_ENCODER_ID = 1;
-            public static final int BR_ANGLE_ENCODER_ID = 1;
+            public static final int FR_ANGLE_ENCODER_ID = 2;
+            public static final int BL_ANGLE_ENCODER_ID = 3;
+            public static final int BR_ANGLE_ENCODER_ID = 4;
 
             public static final int FL_ANGLE_ENCODER_OFFSET_RADIANS = 1;
             public static final int FR_ANGLE_ENCODER_OFFSET_RADIANS = 1;
