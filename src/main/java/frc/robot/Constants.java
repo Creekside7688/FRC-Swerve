@@ -28,7 +28,7 @@ public final class Constants {
             public static final double DRIVE_ENCODER_ROTATION_TO_METRES = DRIVE_GEAR_RATIO * WHEEL_DIAMETER_METRES * Math.PI;
             public static final double DRIVE_ENCODER_RPM_TO_METRES_PER_SECOND = DRIVE_ENCODER_ROTATION_TO_METRES / 60;
 
-            public static final double TURN_ENCODER_ROTATION_TO_RADIANS = TURN_GEAR_RATIO * 2 * Math.PI;
+            public static final double TURN_ENCODER_ROTATION_TO_RADIANS = 2.0 * TURN_GEAR_RATIO * Math.PI;
             public static final double TURN_ENCODER_RPM_TO_RADIANS_PER_SECOND = TURN_ENCODER_ROTATION_TO_RADIANS / 60;
 
             public static final double TURN_KP = 0.5;

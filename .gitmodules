@@ -1,0 +1,3 @@
+[submodule "src/main/java/frc/lib/zylve"]
+	path = src/main/java/frc/lib/zylve
+	url = https://github.com/Zylve/frc-lib/

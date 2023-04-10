@@ -7,6 +7,7 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
+    "**/Thumbs.db": true,
     "bin/": true,
     "**/.classpath": true,
     "**/.project": true,
@@ -26,5 +27,6 @@
     },
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
-  "java.format.settings.url": "java-formatter.xml"
+  "java.format.settings.url": "java-formatter.xml",
+  "explorerExclude.backup": {}
 }
