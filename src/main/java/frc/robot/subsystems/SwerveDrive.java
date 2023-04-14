@@ -58,8 +58,7 @@ public class SwerveDrive extends SubsystemBase {
             try {
                 Thread.sleep(1000);
                 this.resetHeading();
-            } catch(Exception e) {
-            }
+            } catch(Exception e) {}
         }).start();
     }
 
