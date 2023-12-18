@@ -28,5 +28,6 @@
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
   "java.format.settings.url": "java-formatter.xml",
-  "explorerExclude.backup": {}
+  "explorerExclude.backup": {},
+  "java.checkstyle.configuration": "${workspaceFolder}\\checkstyle.xml"
 }
