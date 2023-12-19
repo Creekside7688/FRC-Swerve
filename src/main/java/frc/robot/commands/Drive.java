@@ -16,7 +16,8 @@ public class Drive extends CommandBase {
     private final Supplier<Boolean> fieldOriented;
     private final boolean rateLimit;
 
-    public Drive(SwerveDrive swerveDrive, Supplier<Double> xSpeedSupplier, Supplier<Double> ySpeedSupplier, Supplier<Double> tSpeedSupplier, Supplier<Boolean> fieldOriented, boolean rateLimit) {
+    public Drive(SwerveDrive swerveDrive, Supplier<Double> xSpeedSupplier, Supplier<Double> ySpeedSupplier, Supplier<Double> tSpeedSupplier,
+            Supplier<Boolean> fieldOriented, boolean rateLimit) {
         this.swerveDrive = swerveDrive;
         this.xSpeedSupplier = xSpeedSupplier;
         this.ySpeedSupplier = ySpeedSupplier;

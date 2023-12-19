@@ -207,7 +207,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     /**
-     * How fast the robot is turning in degrees per second
+     * How fast the robot is turning in degrees per second.
      */
     public double getTurnRate() {
         return gyro.getRate() * (DriveConstants.GYRO_INVERTED ? -1.0 : 1.0);

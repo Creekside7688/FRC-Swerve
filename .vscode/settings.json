@@ -29,5 +29,6 @@
   "java.test.defaultConfig": "WPIlibUnitTests",
   "java.format.settings.url": "java-formatter.xml",
   "explorerExclude.backup": {},
-  "java.checkstyle.configuration": "${workspaceFolder}\\checkstyle.xml"
+  "java.checkstyle.configuration": "${workspaceFolder}\\checkstyle.xml",
+  "java.checkstyle.version": "10.12.6"
 }
