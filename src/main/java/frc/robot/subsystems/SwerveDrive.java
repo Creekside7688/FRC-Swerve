@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -9,7 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,7 +37,7 @@ public class SwerveDrive extends SubsystemBase {
             DriveConstants.BR_OFFSET);
 
     // Gyro.
-    private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    private final AHRS gyro = new AHRS();
 
     // Slew Rate filters to control acceleration.
     private double currentRotation = 0.0;
