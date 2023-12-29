@@ -14,6 +14,7 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OperatorConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -53,7 +54,7 @@ public class SwerveDrive extends SubsystemBase {
     // Track robot position with odometry
     SwerveDriveOdometry odometry = new SwerveDriveOdometry(
             DriveConstants.SWERVE_KINEMATICS,
-            Rotation2d.fromDegrees(gyro.getAngle()),
+            this.getRotation2d(),
             new SwerveModulePosition[] {
                     frontLeft.getPosition(),
                     frontRight.getPosition(),
@@ -67,15 +68,18 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Heading", gyro.getAngle());
         odometry.update(
-                Rotation2d.fromDegrees(gyro.getAngle()),
+                this.getRotation2d(),
                 new SwerveModulePosition[] {
                         frontLeft.getPosition(),
                         frontRight.getPosition(),
                         backLeft.getPosition(),
                         backRight.getPosition()
                 });
+
+        SmartDashboard.putNumber("Robot X", odometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("Robot Y", odometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("Robot Rotation", odometry.getPoseMeters().getRotation().getDegrees());
     }
 
     /**
@@ -90,7 +94,7 @@ public class SwerveDrive extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         odometry.resetPosition(
-                Rotation2d.fromDegrees(gyro.getAngle()),
+                this.getRotation2d(),
                 new SwerveModulePosition[] {
                         frontLeft.getPosition(),
                         frontRight.getPosition(),
@@ -105,24 +109,21 @@ public class SwerveDrive extends SubsystemBase {
      *
      * @param xSpeed        Speed of the robot in the x direction (forward).
      * @param ySpeed        Speed of the robot in the y direction (sideways).
-     * @param rotation      Angular rate of the robot.
+     * @param rSpeed      Angular rate of the robot.
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
-    public void drive(double xSpeed, double ySpeed, double rotation, boolean fieldRelative, boolean rateLimit) {
+    public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
 
-        // Marcus's Basement
-        if(Math.abs(xSpeed) > 0.25) {
-            xSpeed = Math.signum(xSpeed) * 0.25;
-        }
+        // https://www.desmos.com/calculator/ivg5yr9pdy
+        xSpeed = Math.pow(xSpeed, 5);
+        ySpeed = Math.pow(ySpeed, 5);
+        rSpeed = Math.pow(rSpeed, 5);
 
-        if(Math.abs(ySpeed) > 0.25) {
-            ySpeed = Math.signum(ySpeed) * 0.25;
-        }
+        xSpeed += (Math.abs(xSpeed) != 0 ? Math.signum(xSpeed) * OperatorConstants.OFFSET : 0.0);
+        ySpeed += (Math.abs(ySpeed) != 0 ? Math.signum(ySpeed) * OperatorConstants.OFFSET : 0.0);
+        rSpeed += (Math.abs(rSpeed) != 0 ? Math.signum(rSpeed) * OperatorConstants.OFFSET : 0.0);
 
-        if(Math.abs(rotation) > 0.25) {
-            rotation = Math.signum(rotation) * 0.25;
-        }
 
         double xSpeedCommand;
         double ySpeedCommand;
@@ -163,12 +164,12 @@ public class SwerveDrive extends SubsystemBase {
 
             xSpeedCommand = currentTranslationMagnitude * Math.cos(currentTranslationDirection);
             ySpeedCommand = currentTranslationMagnitude * Math.sin(currentTranslationDirection);
-            currentRotation = rotationLimiter.calculate(rotation);
+            currentRotation = rotationLimiter.calculate(rSpeed);
 
         } else {
             xSpeedCommand = xSpeed;
             ySpeedCommand = ySpeed;
-            currentRotation = rotation;
+            currentRotation = rSpeed;
         }
 
         // Convert the commanded speeds into proper units
@@ -178,7 +179,7 @@ public class SwerveDrive extends SubsystemBase {
 
         SwerveModuleState[] swerveModuleStates = DriveConstants.SWERVE_KINEMATICS.toSwerveModuleStates(
                 fieldRelative
-                        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getAngle()))
+                        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, this.getRotation2d())
                         : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND);
@@ -220,8 +221,8 @@ public class SwerveDrive extends SubsystemBase {
         gyro.reset();
     }
 
-    public double getHeading() {
-        return Rotation2d.fromDegrees(gyro.getAngle()).getDegrees() * (DriveConstants.GYRO_INVERTED ? -1.0 : 1.0);
+    public Rotation2d getRotation2d() {
+        return gyro.getRotation2d();
     }
 
     /**

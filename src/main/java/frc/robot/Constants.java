@@ -42,7 +42,7 @@ public final class Constants {
         public static final int BL_TURN_MOTOR = 2;
         public static final int BR_TURN_MOTOR = 8;
 
-        public static final boolean GYRO_INVERTED = false;
+        public static final boolean GYRO_INVERTED = true;
     }
 
     public static final class ModuleConstants {
