@@ -11,6 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,7 +39,7 @@ public class SwerveDrive extends SubsystemBase {
             DriveConstants.BR_OFFSET);
 
     // Gyro.
-    private final AHRS gyro = new AHRS();
+    private final AHRS gyro = new AHRS(SerialPort.Port.kUSB);
 
     // Slew Rate filters to control acceleration.
     private double currentRotation = 0.0;
@@ -60,10 +62,12 @@ public class SwerveDrive extends SubsystemBase {
             });
 
     public SwerveDrive() {
+        this.zeroHeading();
     }
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Heading", gyro.getAngle());
         odometry.update(
                 Rotation2d.fromDegrees(gyro.getAngle()),
                 new SwerveModulePosition[] {
@@ -106,6 +110,19 @@ public class SwerveDrive extends SubsystemBase {
      * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
     public void drive(double xSpeed, double ySpeed, double rotation, boolean fieldRelative, boolean rateLimit) {
+
+        // Marcus's Basement
+        if(Math.abs(xSpeed) > 0.25) {
+            xSpeed = Math.signum(xSpeed) * 0.25;
+        }
+
+        if(Math.abs(ySpeed) > 0.25) {
+            ySpeed = Math.signum(ySpeed) * 0.25;
+        }
+
+        if(Math.abs(rotation) > 0.25) {
+            rotation = Math.signum(rotation) * 0.25;
+        }
 
         double xSpeedCommand;
         double ySpeedCommand;
@@ -204,7 +221,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public double getHeading() {
-        return Rotation2d.fromDegrees(gyro.getAngle()).getDegrees();
+        return Rotation2d.fromDegrees(gyro.getAngle()).getDegrees() * (DriveConstants.GYRO_INVERTED ? -1.0 : 1.0);
     }
 
     /**

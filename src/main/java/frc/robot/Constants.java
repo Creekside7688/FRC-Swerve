@@ -17,8 +17,8 @@ public final class Constants {
         public static final double MAGNITUDE_SLEW_RATE = 1.8; // percent per second (1 = 100%)
         public static final double ROTATION_SLEW_RATE = 2.0; // percent per second (1 = 100%)
 
-        public static final double TRACK_WIDTH = Units.inchesToMeters(26.5); // Distance between centers of right and left wheels on robot
-        public static final double WHEEL_BASE = Units.inchesToMeters(26.5); // Distance between front and back wheels on robot
+        public static final double TRACK_WIDTH = Units.inchesToMeters(19.5); // Distance between centers of right and left wheels on robot
+        public static final double WHEEL_BASE = Units.inchesToMeters(19.5); // Distance between front and back wheels on robot
 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
                 new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
@@ -32,21 +32,21 @@ public final class Constants {
         public static final double BL_OFFSET = Math.PI;
         public static final double BR_OFFSET = Math.PI / 2;
 
-        public static final int FL_DRIVE_MOTOR = 1;
-        public static final int FR_DRIVE_MOTOR = 2;
-        public static final int BL_DRIVE_MOTOR = 3;
-        public static final int BR_DRIVE_MOTOR = 4;
+        public static final int FL_DRIVE_MOTOR = 3;
+        public static final int FR_DRIVE_MOTOR = 5;
+        public static final int BL_DRIVE_MOTOR = 1;
+        public static final int BR_DRIVE_MOTOR = 7;
 
-        public static final int FL_TURN_MOTOR = 5;
-        public static final int BL_TURN_MOTOR = 6;
-        public static final int FR_TURN_MOTOR = 7;
+        public static final int FL_TURN_MOTOR = 4;
+        public static final int FR_TURN_MOTOR = 6;
+        public static final int BL_TURN_MOTOR = 2;
         public static final int BR_TURN_MOTOR = 8;
 
         public static final boolean GYRO_INVERTED = false;
     }
 
     public static final class ModuleConstants {
-        // Modules can have 12T, 13T, or 14T pinions. More teeth means it will drive faster
+        // Modules can have 12T, 13T, or 14T pinions. More teeth means it will drive faster.
         public static final int DRIVE_PINION_TEETH = 12;
 
         // Invert the turning encoder, since the output shaft rotates in the opposite direction of the steering motor in the MAXSwerve Module.
